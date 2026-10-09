@@ -1,0 +1,25 @@
+{
+  "auth": {
+    "title": "Panel de administración",
+    "subtitle": "Ingresá para gestionar tu catálogo.",
+    "email": "Email",
+    "password": "Contraseña",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "submit": "Ingresar",
+    "submitting": "Ingresando…",
+    "invalid": "Email o contraseña incorrectos.",
+    "emailInvalid": "Ingresá un email válido.",
+    "passwordRequired": "Ingresá tu contraseña."
+  },
+  "nav": { "logout": "Cerrar sesión", "language": "Idioma" },
+  "dashboard": { "welcome": "Hola, {{email}}", "role": "Rol: {{role}}", "next": "Las secciones de gestión se habilitan en las próximas fases." },
+  "errors": {
+    "generic": "Algo salió mal. Probá de nuevo.",
+    "network": "No pudimos conectar con el servidor. Revisá tu conexión.",
+    "boundaryTitle": "Ocurrió un error inesperado",
+    "boundaryBody": "Recargá la página para continuar.",
+    "reload": "Recargar"
+  },
+  "common": { "loading": "Cargando…" }
+}

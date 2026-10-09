@@ -1,0 +1,25 @@
+{
+  "auth": {
+    "title": "Admin panel",
+    "subtitle": "Sign in to manage your catalog.",
+    "email": "Email",
+    "password": "Password",
+    "show": "Show",
+    "hide": "Hide",
+    "submit": "Sign in",
+    "submitting": "Signing in…",
+    "invalid": "Incorrect email or password.",
+    "emailInvalid": "Enter a valid email.",
+    "passwordRequired": "Enter your password."
+  },
+  "nav": { "logout": "Sign out", "language": "Language" },
+  "dashboard": { "welcome": "Hi, {{email}}", "role": "Role: {{role}}", "next": "Management sections arrive in the next phases." },
+  "errors": {
+    "generic": "Something went wrong. Try again.",
+    "network": "We couldn't reach the server. Check your connection.",
+    "boundaryTitle": "An unexpected error occurred",
+    "boundaryBody": "Reload the page to continue.",
+    "reload": "Reload"
+  },
+  "common": { "loading": "Loading…" }
+}

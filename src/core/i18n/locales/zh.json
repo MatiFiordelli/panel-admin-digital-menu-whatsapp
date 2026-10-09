@@ -1,0 +1,25 @@
+{
+  "auth": {
+    "title": "管理后台",
+    "subtitle": "登录以管理您的商品目录。",
+    "email": "邮箱",
+    "password": "密码",
+    "show": "显示",
+    "hide": "隐藏",
+    "submit": "登录",
+    "submitting": "登录中…",
+    "invalid": "邮箱或密码不正确。",
+    "emailInvalid": "请输入有效的邮箱。",
+    "passwordRequired": "请输入密码。"
+  },
+  "nav": { "logout": "退出登录", "language": "语言" },
+  "dashboard": { "welcome": "你好，{{email}}", "role": "角色：{{role}}", "next": "管理功能将在后续阶段开放。" },
+  "errors": {
+    "generic": "出错了，请重试。",
+    "network": "无法连接服务器，请检查网络。",
+    "boundaryTitle": "发生意外错误",
+    "boundaryBody": "请刷新页面后继续。",
+    "reload": "刷新"
+  },
+  "common": { "loading": "加载中…" }
+}
