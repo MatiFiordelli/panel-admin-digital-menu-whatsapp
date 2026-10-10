@@ -2,6 +2,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { authService } from "@/features/auth/services/auth.service";
 import { QUERY_KEYS } from "@/core/config/api.config";
+import { useUiStore } from "@/core/store/ui-store";
 import type { Role } from "@/core/types";
 
 export function useAuth() {
@@ -16,8 +17,13 @@ export function useAuth() {
   const logoutMutation = useMutation({
     mutationFn: authService.logout,
     onSettled: () => {
-      qc.clear(); // drop every cached tenant-scoped query
+      useUiStore.getState().setActiveTenant(null);
+      // Order matters. Setting the session to null FIRST notifies the mounted observers,
+      // which re-renders ProtectedRoute and redirects to /login. Calling qc.clear() here
+      // would detach those observers from the query and the UI would never update.
       qc.setQueryData(QUERY_KEYS.me, null);
+      // Then drop every other cached query (tenant-scoped data must not survive a logout).
+      qc.removeQueries({ predicate: (q) => q.queryKey[0] !== "auth" });
     },
   });
 

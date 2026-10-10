@@ -6,8 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
 import { useLogin } from "@/features/auth/hooks/useLogin";
 import { ApiError } from "@/core/lib/axios";
+import type { SessionUser } from "@/core/types";
 
-interface Props { onSuccess: () => void }
+interface Props { onSuccess: (user: SessionUser) => void }
 
 export function LoginForm({ onSuccess }: Props) {
   const { t, i18n } = useTranslation();
@@ -43,7 +44,7 @@ export function LoginForm({ onSuccess }: Props) {
   })();
 
   const field =
-    "mt-1 block w-full rounded-md border border-ink/25 bg-white px-3 py-2 text-sm text-ink placeholder:text-ink/40 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand aria-[invalid=true]:border-danger";
+    "mt-1 block w-full rounded-md border border-ink/25 bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink/40 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand aria-[invalid=true]:border-danger";
 
   return (
     <form noValidate onSubmit={handleSubmit((v) => login.mutate(v, { onSuccess }))} className="space-y-4">
@@ -68,7 +69,7 @@ export function LoginForm({ onSuccess }: Props) {
           <button
             type="button" onClick={() => setShowPassword((s) => !s)}
             aria-pressed={showPassword}
-            className="absolute inset-y-0 right-0 mt-1 rounded-r-md px-3 text-xs font-medium text-brand hover:underline focus-visible:outline-2 focus-visible:outline-brand"
+            className="absolute inset-y-0 right-0 mt-1 rounded-r-md px-3 text-xs font-medium text-brand-text hover:underline focus-visible:outline-2 focus-visible:outline-brand"
           >
             {showPassword ? t("auth.hide") : t("auth.show")}
           </button>
