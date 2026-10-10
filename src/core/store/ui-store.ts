@@ -3,15 +3,20 @@ import { create } from "zustand";
 
 interface UiState {
   sidebarOpen: boolean;
-  /** Tenant slug a SuperAdmin is "inside" (sent as x-tenant-id). Wired up in Phase 2. */
+  /** Preferences popup lives at layout level so closing the drawer never unmounts it. */
+  prefsOpen: boolean;
+  /** Tenant slug a SuperAdmin is "inside". In memory only: a page reload returns to global view. */
   activeTenantSlug: string | null;
-  toggleSidebar: () => void;
+  setSidebarOpen: (open: boolean) => void;
+  setPrefsOpen: (open: boolean) => void;
   setActiveTenant: (slug: string | null) => void;
 }
 
 export const useUiStore = create<UiState>((set) => ({
   sidebarOpen: false,
+  prefsOpen: false,
   activeTenantSlug: null,
-  toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
+  setSidebarOpen: (open) => set({ sidebarOpen: open }),
+  setPrefsOpen: (open) => set({ prefsOpen: open }),
   setActiveTenant: (slug) => set({ activeTenantSlug: slug }),
 }));
