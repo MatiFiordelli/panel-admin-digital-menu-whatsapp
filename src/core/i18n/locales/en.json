@@ -12,8 +12,18 @@
     "emailInvalid": "Enter a valid email.",
     "passwordRequired": "Enter your password."
   },
-  "nav": { "logout": "Sign out", "language": "Language" },
-  "dashboard": { "welcome": "Hi, {{email}}", "role": "Role: {{role}}", "next": "Management sections arrive in the next phases." },
+  "nav": {
+    "logout": "Sign out",
+    "language": "Language",
+    "tenants": "Tenants",
+    "dashboard": "Home",
+    "menu": "Menu"
+  },
+  "dashboard": {
+    "welcome": "Hi, {{email}}",
+    "role": "Role: {{role}}",
+    "next": "Management sections arrive in the next phases."
+  },
   "errors": {
     "generic": "Something went wrong. Try again.",
     "network": "We couldn't reach the server. Check your connection.",
@@ -21,5 +31,82 @@
     "boundaryBody": "Reload the page to continue.",
     "reload": "Reload"
   },
-  "common": { "loading": "Loading…" }
+  "common": {
+    "loading": "Loading…",
+    "retry": "Retry",
+    "close": "Close"
+  },
+  "tenants": {
+    "title": "Tenants",
+    "name": "Name",
+    "slugDomain": "Slug / Domain",
+    "status": "Status",
+    "createdAt": "Created",
+    "actions": "Actions",
+    "active": "Active",
+    "suspended": "Suspended",
+    "manage": "Manage",
+    "current": "Current",
+    "managing": "Managing: {{slug}}",
+    "exit": "Exit",
+    "empty": "No tenants yet.",
+    "loadError": "We couldn't load the tenants."
+  },
+  "switcher": {
+    "label": "Switch tenant",
+    "global": "Global view"
+  },
+  "pagination": {
+    "label": "Pagination",
+    "total": "{{count}} total",
+    "first": "First page",
+    "prev": "Previous page",
+    "next": "Next page",
+    "last": "Last page",
+    "goToPage": "Go to page",
+    "go": "Go",
+    "perPage": "Rows per page"
+  },
+  "prefs": {
+    "title": "Preferences",
+    "open": "Open preferences",
+    "mode": "Appearance",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "palette": "Palette",
+    "palettes": {
+      "emerald": "Pinewood",
+      "indigo": "Twilight",
+      "rose": "Ember",
+      "amber": "Wheatfield"
+    },
+    "animations": "Animations",
+    "animationsHint": "Turn them off if you prefer an interface without motion.",
+    "language": "Language"
+  },
+  "status": {
+    "online": "Online",
+    "offline": "Offline",
+    "updated": "Updated {{time}}",
+    "syncing": "Syncing…",
+    "noData": "No data yet",
+    "lostConnection": "Connection lost.",
+    "backOnline": "Back online."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "bell": "Notifications ({{count}} unread)",
+    "empty": "No notifications.",
+    "clearAll": "Clear all",
+    "remove": "Remove notification",
+    "filter": "Filter by type",
+    "types": {
+      "all": "All",
+      "success": "Success",
+      "error": "Error",
+      "warning": "Warning",
+      "info": "Info"
+    }
+  }
 }

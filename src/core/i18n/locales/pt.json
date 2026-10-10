@@ -12,8 +12,18 @@
     "emailInvalid": "Informe um e-mail válido.",
     "passwordRequired": "Informe sua senha."
   },
-  "nav": { "logout": "Sair", "language": "Idioma" },
-  "dashboard": { "welcome": "Olá, {{email}}", "role": "Perfil: {{role}}", "next": "As seções de gestão chegam nas próximas fases." },
+  "nav": {
+    "logout": "Sair",
+    "language": "Idioma",
+    "tenants": "Tenants",
+    "dashboard": "Início",
+    "menu": "Menu"
+  },
+  "dashboard": {
+    "welcome": "Olá, {{email}}",
+    "role": "Perfil: {{role}}",
+    "next": "As seções de gestão chegam nas próximas fases."
+  },
   "errors": {
     "generic": "Algo deu errado. Tente novamente.",
     "network": "Não foi possível conectar ao servidor. Verifique sua conexão.",
@@ -21,5 +31,82 @@
     "boundaryBody": "Recarregue a página para continuar.",
     "reload": "Recarregar"
   },
-  "common": { "loading": "Carregando…" }
+  "common": {
+    "loading": "Carregando…",
+    "retry": "Tentar novamente",
+    "close": "Fechar"
+  },
+  "tenants": {
+    "title": "Tenants",
+    "name": "Nome",
+    "slugDomain": "Slug / Domínio",
+    "status": "Status",
+    "createdAt": "Criado em",
+    "actions": "Ações",
+    "active": "Ativo",
+    "suspended": "Suspenso",
+    "manage": "Gerenciar",
+    "current": "Atual",
+    "managing": "Gerenciando: {{slug}}",
+    "exit": "Sair",
+    "empty": "Ainda não há tenants.",
+    "loadError": "Não foi possível carregar os tenants."
+  },
+  "switcher": {
+    "label": "Trocar de tenant",
+    "global": "Visão global"
+  },
+  "pagination": {
+    "label": "Paginação",
+    "total": "{{count}} no total",
+    "first": "Primeira página",
+    "prev": "Página anterior",
+    "next": "Próxima página",
+    "last": "Última página",
+    "goToPage": "Ir para a página",
+    "go": "Ir",
+    "perPage": "Linhas por página"
+  },
+  "prefs": {
+    "title": "Preferências",
+    "open": "Abrir preferências",
+    "mode": "Aparência",
+    "light": "Claro",
+    "dark": "Escuro",
+    "system": "Sistema",
+    "palette": "Paleta",
+    "palettes": {
+      "emerald": "Pinhal",
+      "indigo": "Crepúsculo",
+      "rose": "Brasa",
+      "amber": "Trigal"
+    },
+    "animations": "Animações",
+    "animationsHint": "Desative se preferir uma interface sem movimento.",
+    "language": "Idioma"
+  },
+  "status": {
+    "online": "Online",
+    "offline": "Sem conexão",
+    "updated": "Atualizado {{time}}",
+    "syncing": "Sincronizando…",
+    "noData": "Ainda sem dados",
+    "lostConnection": "Conexão perdida.",
+    "backOnline": "Conexão restabelecida."
+  },
+  "notifications": {
+    "title": "Notificações",
+    "bell": "Notificações ({{count}} não lidas)",
+    "empty": "Não há notificações.",
+    "clearAll": "Limpar tudo",
+    "remove": "Remover notificação",
+    "filter": "Filtrar por tipo",
+    "types": {
+      "all": "Todas",
+      "success": "Sucesso",
+      "error": "Erro",
+      "warning": "Aviso",
+      "info": "Info"
+    }
+  }
 }
