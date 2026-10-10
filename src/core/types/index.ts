@@ -21,33 +21,26 @@ export interface User extends SessionUser {
   updatedAt: string;
 }
 
-/** Raw pagination shape returned by the API. */
+/**
+ * Pagination as the API actually returns it. /admin/tenants and /users send numbers;
+ * /products sends page/limit as strings. One normalizer covers every endpoint.
+ */
 export interface RawPagination {
   page?: string | number;
   limit?: string | number;
   total: number;
   pages: number | null;
 }
+export interface Pagination { page: number; limit: number; total: number; pages: number }
 
-/** Normalized pagination shape used internally by the panel. */
-export interface Pagination {
-  page: number;
-  limit: number;
-  total: number;
-  pages: number;
-}
-
-export function normalizePagination(
-  p: RawPagination,
-  fallbackLimit: number
-): Pagination {
-  const limit = Number(p.limit ?? fallbackLimit);
-
+export function normalizePagination(p: RawPagination | undefined, fallbackLimit = 10): Pagination {
+  const limit = Number(p?.limit ?? fallbackLimit) || fallbackLimit;
+  const total = p?.total ?? 0;
   return {
-    page: Number(p.page ?? 1),
+    page: Number(p?.page ?? 1) || 1,
     limit,
-    total: p.total,
-    pages: p.pages ?? Math.max(1, Math.ceil(p.total / limit)),
+    total,
+    pages: p?.pages ?? Math.max(1, Math.ceil(total / limit)),
   };
 }
 
@@ -56,6 +49,32 @@ export interface ApiResponse<T> {
   success: boolean;
   message: string;
   data?: T;
-  error?: string;
+  code?: string;
   pagination?: RawPagination;
+}
+
+/** Tenant as returned by /admin/tenants (toAdminJSON). business/ui/infra are typed loosely until Phase 2b/5. */
+export interface Tenant {
+  id: string;
+  tenantId: string;
+  metadata: {
+    slug: string;
+    isActive: boolean;
+    version?: string;
+    plan: "trial" | "basic" | "pro" | "premium";
+    locale: string;
+    timezone: string;
+    customDomain?: string | null;
+    contactEmail: string;
+    trialEndsAt?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
+    appTitle?: Partial<Record<"es" | "en" | "pt" | "zh", string>>;
+    appDescription?: Partial<Record<"es" | "en" | "pt" | "zh", string>>;
+    seo?: Record<string, unknown>;
+    structuredData?: Record<string, unknown>;
+  };
+  business?: { companyInfo?: { name?: string } } & Record<string, unknown>;
+  ui?: Record<string, unknown>;
+  infra?: Record<string, unknown>;
 }
