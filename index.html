@@ -1,13 +1,33 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>admin-panel</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>admin-panel</title>
+
+		<script>
+			// Applies saved theme/palette/motion before first paint (no flash). Mirrors src/core/preferences/apply.ts.
+			(function () {
+				try {
+					var s =
+						JSON.parse(localStorage.getItem("admin-prefs") || "{}")
+							.state || {};
+					var mode = s.mode || "system";
+					var dark =
+						mode === "dark" ||
+						(mode === "system" &&
+							matchMedia("(prefers-color-scheme: dark)").matches);
+					var r = document.documentElement;
+					if (dark) r.classList.add("dark");
+					r.dataset.theme = s.palette || "emerald";
+					r.dataset.motion = s.animations === false ? "off" : "on";
+				} catch (e) {}
+			})();
+		</script>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="module" src="/src/main.tsx"></script>
+	</body>
 </html>

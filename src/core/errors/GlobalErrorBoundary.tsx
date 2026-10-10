@@ -25,7 +25,7 @@ export class GlobalErrorBoundary extends Component<Props, State> {
           <p className="mt-2 text-sm text-ink/70">{i18n.t("errors.boundaryBody")}</p>
           <button
             onClick={() => window.location.reload()}
-            className="mt-5 rounded-md bg-ink px-4 py-2 text-sm font-medium text-paper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            className="mt-5 rounded-md bg-brand px-4 py-2 text-sm font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             {i18n.t("errors.reload")}
           </button>

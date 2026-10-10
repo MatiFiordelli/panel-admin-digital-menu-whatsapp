@@ -9,7 +9,7 @@ export function LanguageSelector({ className = "" }: { className?: string }) {
       aria-label={t("nav.language")}
       value={i18n.language}
       onChange={(e) => void setLanguage(e.target.value as LanguageId)}
-      className={`rounded-md border border-ink/25 bg-white px-2 py-1.5 text-sm text-ink focus-visible:outline-2 focus-visible:outline-brand ${className}`}
+      className={`rounded-md border border-ink/25 bg-surface px-2 py-1.5 text-sm text-ink focus-visible:outline-2 focus-visible:outline-brand ${className}`}
     >
       {LANGUAGES.map((l) => <option key={l.id} value={l.id}>{l.label}</option>)}
     </select>

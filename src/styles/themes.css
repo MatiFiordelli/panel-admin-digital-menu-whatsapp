@@ -1,0 +1,100 @@
+/* src/styles/themes.css
+ *
+ * Single home of the admin UI's theming. A palette defines the WHOLE look: page background (paper),
+ * cards (surface), sidebar (rail), text (ink) and brand colors, each for light and for dark.
+ * HOW TO ADD A PALETTE: copy a block pair below, change the values, then add one entry to PALETTES in
+ * src/core/preferences/preferences-store.ts and its name to the 4 locale files (prefs.palettes.<id>).
+ * HOW TO REMOVE ONE: delete the block pair, the PALETTES entry and the keys. Saved users fall back to default.
+ *
+ * Rules are scoped under :root[data-theme="<id>"] (and :root.dark[...]) so they beat shadcn's own
+ * :root / .dark blocks regardless of load order. <html> always carries data-theme.
+ */
+
+/* Registers the tokens as Tailwind utilities. These are only defaults; real values come from below. */
+@theme {
+  --color-ink: #1b2420;        /* text */
+  --color-paper: #f5f6f3;      /* page background */
+  --color-surface: #ffffff;    /* cards, inputs, table, header, footer */
+  --color-rail: #1b2420;       /* sidebar (dark in BOTH modes) */
+  --color-rail-fg: #f5f6f3;
+  --color-brand: #0f6b57;      /* fills: buttons, active page. Always readable with white text */
+  --color-brand-dark: #0b5242; /* hover for fills */
+  --color-brand-text: #0b5242; /* brand-colored TEXT / outlines on the page surface */
+  --color-danger: #b3261e;
+}
+
+/* ---------- Mode base (fallback if a palette block is missing) ---------- */
+:root[data-theme]      { color-scheme: light; --color-rail-fg: #f5f6f3; --color-danger: #b3261e; }
+:root.dark[data-theme] { color-scheme: dark;  --color-rail-fg: #f5f6f3; --color-danger: #f2877f; }
+
+/* ---------- shadcn/ui bridge: its components follow our mode and palette ---------- */
+:root[data-theme] {
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-brand);
+  --primary-foreground: #ffffff;
+  --ring: var(--color-brand);
+  --destructive: var(--color-danger);
+}
+
+/* ===== Pinar (emerald) — default ===== */
+:root[data-theme="emerald"] {
+  --color-ink: #1b2420; --color-paper: #f1f5f2; --color-surface: #ffffff; --color-rail: #14352d;
+  --color-brand: #0f6b57; --color-brand-dark: #0b5242; --color-brand-text: #0b5242;
+}
+:root.dark[data-theme="emerald"] {
+  --color-ink: #e8ece9; --color-paper: #0e1512; --color-surface: #16201c; --color-rail: #08100d;
+  --color-brand: #0f6b57; --color-brand-dark: #0b5242; --color-brand-text: #5fd3b6;
+}
+
+/* ===== Crepúsculo (indigo) ===== */
+:root[data-theme="indigo"] {
+  --color-ink: #1a1a33; --color-paper: #f1f1fa; --color-surface: #ffffff; --color-rail: #1e1b4b;
+  --color-brand: #4338ca; --color-brand-dark: #3730a3; --color-brand-text: #3730a3;
+}
+:root.dark[data-theme="indigo"] {
+  --color-ink: #e6e6f5; --color-paper: #0e0f20; --color-surface: #171a31; --color-rail: #080918;
+  --color-brand: #4338ca; --color-brand-dark: #3730a3; --color-brand-text: #a5b4fc;
+}
+
+/* ===== Brasa (rose) ===== */
+:root[data-theme="rose"] {
+  --color-ink: #2a1218; --color-paper: #fbeff2; --color-surface: #ffffff; --color-rail: #4c0519;
+  --color-brand: #be123c; --color-brand-dark: #9f1239; --color-brand-text: #9f1239;
+}
+:root.dark[data-theme="rose"] {
+  --color-ink: #f5e6ea; --color-paper: #1a0d11; --color-surface: #26141a; --color-rail: #11050a;
+  --color-brand: #be123c; --color-brand-dark: #9f1239; --color-brand-text: #fda4af;
+}
+
+/* ===== Trigal (amber) ===== */
+:root[data-theme="amber"] {
+  --color-ink: #2a1d0a; --color-paper: #faf3e4; --color-surface: #fffdf8; --color-rail: #43260a;
+  --color-brand: #b45309; --color-brand-dark: #92400e; --color-brand-text: #92400e;
+}
+:root.dark[data-theme="amber"] {
+  --color-ink: #f3eadb; --color-paper: #16110a; --color-surface: #211a0f; --color-rail: #0e0a04;
+  --color-brand: #b45309; --color-brand-dark: #92400e; --color-brand-text: #fcd34d;
+}
+
+/* ---------- Animations switch (Preferences -> Animations off) ---------- */
+:root[data-motion="off"] *,
+:root[data-motion="off"] *::before,
+:root[data-motion="off"] *::after {
+  transition-duration: 0.01ms !important;
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+}
+
+/* ---------- Scrollbars: thin, subtle and with reserved space (no layout jump) ---------- */
+html { scrollbar-gutter: stable; } /* the page's scrollbar space is always reserved, e.g. when a popup locks scrolling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--color-ink) 30%, transparent) transparent;
+  scrollbar-gutter: stable; /* only affects scroll containers (tables, popups, lists) */
+}
