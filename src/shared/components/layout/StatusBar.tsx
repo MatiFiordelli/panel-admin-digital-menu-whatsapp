@@ -20,9 +20,9 @@ export function StatusBar() {
   useEffect(() => {
     if (prev.current === online) return;
     prev.current = online;
-    if (online) notify.success(t("status.backOnline"));
-    else notify.error(t("status.lostConnection"));
-  }, [online, t]);
+    if (online) notify.success("status.backOnline");
+    else notify.error("status.lostConnection");
+  }, [online]);
 
   const fmt = new Intl.DateTimeFormat(i18n.language, { timeStyle: "medium" });
 
@@ -34,7 +34,7 @@ export function StatusBar() {
       </span>
       <span className="flex items-center gap-2">
         {fetching && <span aria-hidden className="size-3 animate-spin rounded-full border-2 border-ink/20 border-t-brand-text" />}
-        <span>{fetching ? t("status.syncing") : lastSync ? t("status.updated", { time: fmt.format(lastSync) }) : t("status.noData")}</span>
+        <span title={lastSync ? new Date(lastSync).toLocaleString(i18n.language) : undefined}>{fetching ? t("status.syncing") : lastSync ? t("status.updated", { time: fmt.format(lastSync) }) : t("status.noData")}</span>
         <NotificationsBell />
       </span>
     </footer>

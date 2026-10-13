@@ -5,6 +5,7 @@ import { AnimatePresence, m } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { UI_CONFIG } from "@/core/config/ui.config";
 import { useNotifications } from "@/core/notifications/notifications-store";
+import { Tooltip } from "@/shared/components/ui/Tooltip";
 import { NotificationsPopup } from "@/features/notifications/components/NotificationsPopup";
 
 export function NotificationsBell() {
@@ -15,6 +16,7 @@ export function NotificationsBell() {
 
   return (
     <>
+      <Tooltip label={t("tooltips.bell")}>
       <button
         onClick={() => setOpen(true)} aria-haspopup="dialog" aria-label={t("notifications.bell", { count: unread })}
         className="relative grid size-7 place-items-center rounded-md transition-transform hover:bg-ink/10 active:scale-90 focus-visible:outline-2 focus-visible:outline-brand-text"
@@ -36,6 +38,7 @@ export function NotificationsBell() {
           )}
         </AnimatePresence>
       </button>
+      </Tooltip>
       <NotificationsPopup open={open} onClose={() => setOpen(false)} />
     </>
   );

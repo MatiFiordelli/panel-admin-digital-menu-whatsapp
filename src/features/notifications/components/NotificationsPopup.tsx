@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, m } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { UI_CONFIG } from "@/core/config/ui.config";
+import { resolveParams } from "@/core/notifications/params";
 import { Popup } from "@/shared/components/ui/Popup";
 import { NOTIFICATION_TYPES, useNotifications, type NotificationType } from "@/core/notifications/notifications-store";
 
@@ -50,7 +51,7 @@ export function NotificationsPopup({ open, onClose }: { open: boolean; onClose: 
 
       <div style={{ minHeight: UI_CONFIG.NOTIFICATIONS.LIST_MIN_HEIGHT }}>
       {visible.length === 0 ? (
-        <p className="py-8 text-center text-sm text-ink/60">{t("notifications.empty")}</p>
+        <p className="py-8 text-center text-sm text-ink/70">{t("notifications.empty")}</p>
       ) : (
         <ul className="space-y-2">
           <AnimatePresence initial={false}>
@@ -62,13 +63,13 @@ export function NotificationsPopup({ open, onClose }: { open: boolean; onClose: 
                 className={`flex items-start justify-between gap-3 rounded-md border-l-4 px-3 py-2 ${STYLES[n.type]}`}
               >
                 <div className="min-w-0">
-                  <div className="text-[11px] font-semibold uppercase tracking-wide text-ink/60">
+                  <div className="text-[11px] font-semibold uppercase tracking-wide text-ink/70">
                     {t(`notifications.types.${n.type}`)} · {fmt.format(n.at)}
                   </div>
-                  <div className="break-words text-sm">{n.message}</div>
+                  <div className="break-words text-sm">{n.key ? t(n.key, resolveParams(n.params, t)) : n.message}</div>
                 </div>
                 <button
-                  onClick={() => remove(n.id)} aria-label={t("notifications.remove")}
+                  onClick={() => remove(n.id)} aria-label={t("notifications.remove")} title={t("notifications.remove")}
                   className="grid size-6 shrink-0 place-items-center rounded text-base leading-none transition-transform hover:bg-ink/10 active:scale-90 focus-visible:outline-2 focus-visible:outline-brand-text"
                 >×</button>
               </m.li>
