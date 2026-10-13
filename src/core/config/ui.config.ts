@@ -30,4 +30,16 @@ export const UI_CONFIG = {
     PROBE_TIMEOUT_MS: 8_000,          // a probe slower than this counts as a failure
     FAILURES_BEFORE_OFFLINE: 2,       // consecutive failures before showing "offline" (avoids flapping)
   },
+  LAYOUT: {
+    // Below this width the app uses the mobile layout (drawer menu, bottom-sheet popups, edge swipe).
+    // Keep in sync with Tailwind's `lg` breakpoint (1024px), which the class names use (lg:).
+    MOBILE_QUERY: "(max-width: 1023px)",
+  },
+  TOOLTIPS: {
+    DELAY_MS: 450, // hover/focus time before a tooltip appears
+  },
+  FORMS: {
+    // "onChange": errors appear/disappear while typing. Alternatives: "onBlur", "onTouched" (on blur first, then live).
+    VALIDATION_MODE: "onChange",
+  },
 } as const;

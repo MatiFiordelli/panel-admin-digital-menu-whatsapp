@@ -5,8 +5,11 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
 import { useLogin } from "@/features/auth/hooks/useLogin";
+import { UI_CONFIG } from "@/core/config/ui.config";
 import { ApiError } from "@/core/lib/axios";
 import type { SessionUser } from "@/core/types";
+import { FormField } from "@/shared/components/ui/FormField";
+import { btnPrimary, inputCls } from "@/shared/components/ui/form-styles";
 
 interface Props { onSuccess: (user: SessionUser) => void }
 
@@ -27,12 +30,10 @@ export function LoginForm({ onSuccess }: Props) {
   );
   type Values = z.infer<typeof schema>;
 
-  const { register, handleSubmit, formState: { errors } } = useForm<Values>({
-    resolver: zodResolver(schema),
-  });
+  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<Values>({ resolver: zodResolver(schema), mode: UI_CONFIG.FORMS.VALIDATION_MODE });
+  const email = watch("email");
 
   // 423 (locked) shows the server message verbatim: it includes the minutes remaining.
-  // 401 uses our translated copy; anything else is a generic/network error.
   const serverError = (() => {
     const e = login.error;
     if (!e) return null;
@@ -43,50 +44,38 @@ export function LoginForm({ onSuccess }: Props) {
     return t("errors.generic");
   })();
 
-  const field =
-    "mt-1 block w-full rounded-md border border-ink/25 bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink/40 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand aria-[invalid=true]:border-danger";
-
   return (
-    <form noValidate onSubmit={handleSubmit((v) => login.mutate(v, { onSuccess }))} className="space-y-4">
-      <div>
-        <label htmlFor="email" className="text-sm font-medium">{t("auth.email")}</label>
-        <input
-          id="email" type="email" autoComplete="username" autoFocus
-          aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-err" : undefined}
-          className={field} {...register("email")}
-        />
-        {errors.email && <p id="email-err" className="mt-1 text-sm text-danger">{errors.email.message}</p>}
-      </div>
-
-      <div>
-        <label htmlFor="password" className="text-sm font-medium">{t("auth.password")}</label>
-        <div className="relative">
-          <input
-            id="password" type={showPassword ? "text" : "password"} autoComplete="current-password"
-            aria-invalid={!!errors.password} aria-describedby={errors.password ? "pw-err" : undefined}
-            className={`${field} pr-20`} {...register("password")}
-          />
-          <button
-            type="button" onClick={() => setShowPassword((s) => !s)}
-            aria-pressed={showPassword}
-            className="absolute inset-y-0 right-0 mt-1 rounded-r-md px-3 text-xs font-medium text-brand-text hover:underline focus-visible:outline-2 focus-visible:outline-brand"
-          >
-            {showPassword ? t("auth.hide") : t("auth.show")}
-          </button>
-        </div>
-        {errors.password && <p id="pw-err" className="mt-1 text-sm text-danger">{errors.password.message}</p>}
-      </div>
-
-      {serverError && (
-        <p role="alert" className="rounded-md border border-danger/30 bg-danger/5 px-3 py-2 text-sm text-danger">
-          {serverError}
-        </p>
-      )}
-
-      <button
-        type="submit" disabled={login.isPending}
-        className="w-full rounded-md bg-brand px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-dark disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+    <form noValidate onSubmit={handleSubmit((v) => login.mutate(v, { onSuccess }))}>
+      <FormField
+        id="email" required label={t("auth.email")} error={errors.email?.message}
+        clearable hasValue={!!email} onClear={() => { setValue("email", "", { shouldDirty: true, shouldValidate: true }); document.getElementById("email")?.focus(); }}
       >
+        <input
+          id="email" type="email" autoComplete="username" autoFocus placeholder={t("auth.emailPlaceholder")}
+          aria-required="true" aria-invalid={!!errors.email} aria-describedby="email-msg" className={`${inputCls} pr-9`} {...register("email")}
+        />
+      </FormField>
+
+      <FormField id="password" required label={t("auth.password")} error={errors.password?.message}>
+        <input
+          id="password" type={showPassword ? "text" : "password"} autoComplete="current-password" placeholder={t("auth.passwordPlaceholder")}
+          aria-required="true" aria-invalid={!!errors.password} aria-describedby="password-msg" className={`${inputCls} pr-20`} {...register("password")}
+        />
+        <button
+          type="button" onClick={() => setShowPassword((s) => !s)} aria-pressed={showPassword}
+          className="absolute inset-y-0 right-0 rounded-r-md px-3 text-xs font-medium text-brand-text hover:underline focus-visible:outline-2 focus-visible:outline-brand-text"
+        >
+          {showPassword ? t("auth.hide") : t("auth.show")}
+        </button>
+      </FormField>
+
+      <div className="min-h-12">
+        {serverError && (
+          <p role="alert" className="rounded-md border border-danger/30 bg-danger/5 px-3 py-2 text-sm text-danger">{serverError}</p>
+        )}
+      </div>
+
+      <button type="submit" disabled={login.isPending} className={`${btnPrimary} w-full py-2.5`}>
         {login.isPending ? t("auth.submitting") : t("auth.submit")}
       </button>
     </form>
