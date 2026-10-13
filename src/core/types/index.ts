@@ -50,6 +50,7 @@ export interface ApiResponse<T> {
   message: string;
   data?: T;
   code?: string;
+  field?: string;
   pagination?: RawPagination;
 }
 

@@ -8,14 +8,27 @@ import type { ApiResponse, User } from "@/core/types";
 
 /** Normalized error so UI code never touches AxiosError directly. */
 export class ApiError extends Error {
+  // 1. Declarar las propiedades de forma explícita
   public status: number;
   public code?: string;
+  public field?: string;
 
-  constructor(status: number, message: string, code?: string) {
+  constructor(
+    status: number,
+    message: string,
+    code?: string,
+    field?: string
+  ) {
     super(message);
     this.name = "ApiError";
+
+    // 2. Asignar los valores manualmente
     this.status = status;
     this.code = code;
+    this.field = field;
+    
+    // Restaura el prototipo correcto para clases que extienden Error
+    Object.setPrototypeOf(this, ApiError.prototype);
   }
 }
 
@@ -57,6 +70,6 @@ http.interceptors.response.use(
       queryClient.setQueryData(QUERY_KEYS.me, null);
     }
     // 423 (account locked) is NOT redirected: the login form shows the server message as-is.
-    return Promise.reject(new ApiError(status, message, err.response?.data?.code));
+    return Promise.reject(new ApiError(status, message, err.response?.data?.code, err.response?.data?.field));
   },
 );
