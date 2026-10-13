@@ -14,4 +14,6 @@ export const NAV_ITEMS: NavItem[] = [
 export const CRUMBS: Record<string, string> = {
   tenants: "nav.tenants",
   dashboard: "nav.dashboard",
+  new: "tenants.crumbNew",
+  edit: "tenants.crumbEdit",
 };
