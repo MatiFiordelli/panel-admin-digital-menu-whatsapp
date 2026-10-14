@@ -10,7 +10,7 @@ export function useEdgeSwipeOpen(enabled: boolean, onOpen: () => void) {
   useEffect(() => {
     if (!enabled) return;
     const { EDGE_WIDTH, OPEN_DISTANCE, OPEN_VELOCITY, OPEN_FLICK_MIN } = UI_CONFIG.GESTURES.DRAWER;
-    const small = window.matchMedia("(max-width: 767px)"); // the drawer only exists below md
+    const small = window.matchMedia(UI_CONFIG.LAYOUT.MOBILE_QUERY); // the drawer only exists below the lg breakpoint
     let tracking = false, decided = false, moved = false;
     let x0 = 0, y0 = 0, t0 = 0;
 

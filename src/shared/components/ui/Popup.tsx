@@ -8,6 +8,7 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, m, useDragControls } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { UI_CONFIG } from "@/core/config/ui.config";
+import { useFocusTrap } from "@/shared/hooks/useFocusTrap";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 
 interface Props {
@@ -22,9 +23,10 @@ const { CLOSE_DISTANCE, CLOSE_VELOCITY } = UI_CONFIG.GESTURES.POPUP;
 
 export function Popup({ open, onClose, title, children }: Props) {
   const { t } = useTranslation();
-  const mobile = useMediaQuery("(max-width: 767px)");
+  const mobile = useMediaQuery(UI_CONFIG.LAYOUT.MOBILE_QUERY);
   const controls = useDragControls();
   const panelRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(panelRef, open); // Tab stays inside the dialog; focus returns to the opener on close
   const titleId = useId();
 
   useEffect(() => {
@@ -33,7 +35,6 @@ export function Popup({ open, onClose, title, children }: Props) {
     document.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    panelRef.current?.focus();
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
@@ -60,7 +61,7 @@ export function Popup({ open, onClose, title, children }: Props) {
           ref={panelRef}
           tabIndex={-1}
           role="dialog" aria-modal="true" aria-labelledby={titleId}
-          className="fixed inset-x-0 bottom-0 z-50 flex max-h-[85dvh] flex-col rounded-t-2xl bg-surface text-ink shadow-xl outline-none md:inset-x-auto md:bottom-auto md:left-1/2 md:top-1/2 md:max-h-[80dvh] md:w-[28rem] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-2xl"
+          className="fixed inset-x-0 bottom-0 z-50 flex max-h-[85dvh] flex-col rounded-t-2xl bg-surface text-ink shadow-xl outline-none lg:inset-x-auto lg:bottom-auto lg:left-1/2 lg:top-1/2 lg:max-h-[80dvh] lg:w-[28rem] lg:-translate-x-1/2 lg:-translate-y-1/2 lg:rounded-2xl"
           {...motionProps}
           drag={mobile ? "y" : false}
           dragControls={controls}
@@ -74,16 +75,16 @@ export function Popup({ open, onClose, title, children }: Props) {
         >
           <div
             onPointerDown={(e) => mobile && controls.start(e)}
-            className="select-none px-4 pb-2 pt-2 md:pt-4"
+            className="select-none px-4 pb-2 pt-2 lg:pt-4"
             style={{ touchAction: "none" }}
           >
-            <div className="mx-auto mb-2 h-1.5 w-10 rounded-full bg-ink/20 md:hidden" />
+            <div className="mx-auto mb-2 h-1.5 w-10 rounded-full bg-ink/20 lg:hidden" />
             <div className="flex items-center justify-between gap-3">
               <h2 id={titleId} className="text-lg font-semibold tracking-tight">{title}</h2>
               <button
                 onPointerDown={(e) => e.stopPropagation()}
                 onClick={onClose}
-                aria-label={t("common.close")}
+                aria-label={t("common.close")} title={t("common.close")}
                 className="grid size-8 place-items-center rounded-md text-lg leading-none transition-transform hover:bg-ink/10 active:scale-90 focus-visible:outline-2 focus-visible:outline-brand-text"
               >×</button>
             </div>

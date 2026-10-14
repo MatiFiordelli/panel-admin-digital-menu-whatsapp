@@ -6,6 +6,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { m, useTransform } from "framer-motion";
 import { UI_CONFIG } from "@/core/config/ui.config";
+import { useFocusTrap } from "@/shared/hooks/useFocusTrap";
 import { DRAWER_WIDTH, drawerX, moveDrawer } from "@/shared/components/layout/drawer-motion";
 
 interface Props {
@@ -19,6 +20,7 @@ const { CLOSE_DISTANCE, CLOSE_VELOCITY } = UI_CONFIG.GESTURES.DRAWER;
 
 export function MobileDrawer({ open, onClose, label, children }: Props) {
   const panelRef = useRef<HTMLElement>(null);
+  useFocusTrap(panelRef, open);
   const scrimOpacity = useTransform(drawerX, [-DRAWER_WIDTH, 0], [0, 1]);
 
   // State -> position. (While the edge swipe is in progress `open` is still false and the gesture moves drawerX itself.)
@@ -30,7 +32,6 @@ export function MobileDrawer({ open, onClose, label, children }: Props) {
     document.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    panelRef.current?.focus();
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
@@ -42,7 +43,7 @@ export function MobileDrawer({ open, onClose, label, children }: Props) {
   return (
     <>
       <m.div
-        className="fixed inset-0 z-20 bg-black/40 md:hidden"
+        className="fixed inset-0 z-20 bg-black/40 lg:hidden"
         style={{ opacity: scrimOpacity, pointerEvents: open ? "auto" : "none", touchAction: "pan-y" }}
         onClick={onClose}
         // Dragging outside the menu: the panel follows the finger, then closes or springs back.
@@ -57,7 +58,7 @@ export function MobileDrawer({ open, onClose, label, children }: Props) {
         aria-modal={open}
         aria-label={label}
         inert={!open} // hidden menu: not focusable, ignored by screen readers
-        className="fixed inset-y-0 left-0 z-30 flex flex-col bg-rail p-3 outline-none md:hidden"
+        className="fixed inset-y-0 left-0 z-30 flex flex-col bg-rail p-3 outline-none lg:hidden"
         style={{ x: drawerX, width: DRAWER_WIDTH, touchAction: "pan-y" }}
         drag="x"
         dragConstraints={{ left: -DRAWER_WIDTH, right: 0 }}

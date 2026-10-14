@@ -98,3 +98,17 @@ html { scrollbar-gutter: stable; } /* the page's scrollbar space is always reser
   scrollbar-color: color-mix(in oklab, var(--color-ink) 30%, transparent) transparent;
   scrollbar-gutter: stable; /* only affects scroll containers (tables, popups, lists) */
 }
+
+/* ---------- Cursors ----------
+ * Tailwind v4 no longer gives buttons a pointer cursor. Every interactive control gets the right one here, so no component
+ * has to remember it; disabled controls show "not-allowed". */
+button:not(:disabled), [role="button"]:not([aria-disabled="true"]), [role="tab"], [role="switch"], [role="radio"],
+summary, select:not(:disabled), a[href], input[type="color"]:not(:disabled), input[type="date"]:not(:disabled),
+label:has(input[type="radio"]:not(:disabled)), label:has(input[type="checkbox"]:not(:disabled)) {
+  cursor: pointer;
+}
+button:disabled, [aria-disabled="true"], select:disabled, input:disabled, textarea:disabled,
+label:has(input:disabled) {
+  cursor: not-allowed;
+}
+input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="password"], textarea { cursor: text; }

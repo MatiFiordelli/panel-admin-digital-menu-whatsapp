@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { MODES, PALETTES, usePreferences } from "@/core/preferences/preferences-store";
 import { LanguageSelector } from "@/shared/components/LanguageSelector";
 
-const group = "mb-2 block text-xs font-semibold uppercase tracking-wide text-ink/60";
+const group = "mb-2 block text-xs font-semibold uppercase tracking-wide text-ink/70";
 // Native radios (visually hidden) give correct keyboard behavior for free.
 const segment =
   "block cursor-pointer rounded-md border border-ink/25 px-3 py-2 text-center text-sm transition-colors active:scale-[0.97] peer-checked:border-brand peer-checked:bg-brand peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-brand-text";
@@ -43,7 +43,7 @@ export function PreferencesPanel() {
       <div className="flex items-center justify-between gap-4">
         <div>
           <div className="text-sm font-medium">{t("prefs.animations")}</div>
-          <div className="text-xs text-ink/60">{t("prefs.animationsHint")}</div>
+          <div className="text-xs text-ink/70">{t("prefs.animationsHint")}</div>
         </div>
         <button
           role="switch" aria-checked={animations} aria-label={t("prefs.animations")}

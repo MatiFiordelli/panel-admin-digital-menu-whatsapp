@@ -1,6 +1,7 @@
 // src/pages/LoginPage.tsx
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useDocumentTitle } from "@/shared/hooks/useDocumentTitle";
 import { SplashScreen } from "@/shared/components/SplashScreen";
 import { LoginForm } from "@/features/auth/components/LoginForm";
 import { useAuth } from "@/features/auth/hooks/useAuth";
@@ -10,6 +11,7 @@ import { PreferencesPopup } from "@/features/preferences/components/PreferencesP
 
 export default function LoginPage() {
   const { t } = useTranslation();
+  useDocumentTitle(t("auth.title"));
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,9 +22,9 @@ export default function LoginPage() {
   if (user) return <Navigate to={from ?? getHomePath(user.role)} replace />;
 
   return (
-    <div className="grid min-h-dvh md:grid-cols-[5fr_6fr]">
+    <div className="grid min-h-dvh lg:grid-cols-[5fr_6fr]">
       <PreferencesPopup />
-      <aside className="hidden flex-col justify-end bg-rail p-10 text-rail-fg md:flex">
+      <aside className="hidden flex-col justify-end bg-rail p-10 text-rail-fg lg:flex">
         <p className="max-w-xs text-3xl font-semibold leading-tight tracking-tight">
           Menú, precios y stock al día. Sin llamar a nadie.
         </p>

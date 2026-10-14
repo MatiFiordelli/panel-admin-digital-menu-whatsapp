@@ -26,7 +26,7 @@ export function PreferencesButton({ variant = "plain", onOpen }: Props) {
   }
   return (
     <button
-      onClick={open} aria-label={t("prefs.open")} aria-haspopup="dialog"
+      onClick={open} aria-label={t("prefs.open")} title={t("prefs.open")} aria-haspopup="dialog"
       className="grid size-9 place-items-center rounded-md border border-ink/25 bg-surface text-lg transition-transform hover:bg-ink/5 active:scale-90 focus-visible:outline-2 focus-visible:outline-brand-text"
     >
       <span aria-hidden>⚙</span>
