@@ -1,10 +1,14 @@
 # Notificaciones y gestos
 
 ## Notificaciones (toasts + historial)
-- **Regla:** todo aviso al usuario pasa por `notify.success|error|warning|info(mensaje)` (`src/core/notifications/notify.ts`).
-  Muestra el toast Y lo guarda en el historial. No llamar a `toast` de sonner directamente.
+- **Regla:** todo aviso al usuario pasa por `notify.success|error|warning|info("clave.i18n", { params })` (`src/core/notifications/notify.ts`).
+  Muestra el toast (traducido en ese momento) Y guarda en el historial la **clave y los parámetros**, no el texto. No llamar a `toast` de sonner directamente
+  ni pasar texto ya traducido.
+- **El historial siempre se muestra en el idioma actual**, aunque la notificación se haya generado en otro idioma. Los parámetros pueden referenciar claves
+  (`{ $t: "tenants.fields.slug", then: ": texto" }`) para que también esas partes se re-traduzcan; el texto crudo de la API (si lo hay) se muestra tal cual.
+  Las notificaciones guardadas antes de este cambio solo tienen texto y se muestran como estaban.
 - **Historial:** `localStorage["admin-notifications"]`, más nuevo primero, tope `NOTIFICATIONS.MAX_STORED` (100).
-  Cada entrada guarda tipo, mensaje (ya traducido, en el idioma de ese momento), fecha/hora y si fue leída.
+  Cada entrada guarda tipo, clave de traducción, parámetros, fecha/hora y si fue leída.
   No poner datos sensibles en los mensajes: el historial sobrevive al logout en ese navegador.
 - **Campana** en la barra de estado (pie), con contador de no leídas (`99+` como tope visual). Al tocarla abre el
   popup del historial y marca todo como leído.
@@ -29,17 +33,11 @@ atrás"; en algunos dispositivos ese gesto puede ganarle al del menú. El botón
 La detección usa oyentes pasivos en `document` (sin una capa invisible que robe toques). Si el movimiento es más vertical que horizontal, se ignora (es un scroll).
 
 ## Conectividad (indicador "En línea / Sin conexión")
-Responde a "¿esta app puede llegar a la API?", no solo a "¿el dispositivo tiene red?" (`connectivity-store.ts`). Señales:
-1. Eventos `offline` / `online` del navegador (offline es inmediato; online dispara una comprobación).
-2. Resultado de cada request: respuesta < 500 = alcanzable; error de red sin respuesta = sin conexión.
-3. Sonda a la API (`ENDPOINTS.probe`, hoy `/auth/me`) con estas reglas de costo:
-   - se **omite** si algún request real tuvo éxito en los últimos 30 s (la actividad ya prueba que hay conexión);
-   - solo corre con la pestaña **visible**; en reposo, como máximo 1 cada 30 s;
-   - tras un fallo se reconfirma a los 4 s; con 2 fallos seguidos pasa a "sin conexión";
-   - estando sin conexión comprueba cada 5 s (esos requests fallan en local y no cuestan nada al servidor) para recuperarse rápido.
-Valores en `UI_CONFIG.CONNECTIVITY`.
-**Por qué un 5xx cuenta como fallo en la sonda:** en desarrollo el navegador habla con el proxy LOCAL de Vite, que sigue
-respondiendo (con 500) aunque el Wi-Fi esté apagado. Con "cualquier respuesta = conectado", cortar el Wi-Fi no se detectaba;
-emular "Offline" en DevTools sí, porque bloquea también localhost.
-Mejora posible: si `GET /api/v1/health/live` responde 200, apuntar `ENDPOINTS.probe` ahí (no consulta sesión ni base).
-No está acoplado al `onlineManager` de TanStack Query a propósito: un falso "offline" no debe pausar logins ni guardados.
+Responde a "¿esta app puede llegar a la API?", no solo a "¿el dispositivo tiene red?". `navigator.onLine` sigue en `true` con
+Wi-Fi sin internet y algunos navegadores no emiten el evento, así que es solo UNA de las señales (`connectivity-store.ts`):
+1. Eventos `offline` / `online` del navegador (offline es inmediato; online dispara una sonda antes de confirmar).
+2. Resultado de cada request: cualquier respuesta HTTP (incluso 401/500) = alcanzable; error de red sin respuesta = sin conexión.
+3. Sonda periódica a `GET /auth/me` (cada 15 s, solo con la pestaña visible; 2 fallos seguidos para declarar offline).
+Valores en `UI_CONFIG.CONNECTIVITY`. El tiempo máximo para detectar un corte sin eventos es ~30 s; con eventos o requests, inmediato.
+Los cambios de estado generan una notificación (`notify`). No está acoplado al `onlineManager` de TanStack Query a propósito:
+un falso "offline" no debe pausar logins ni guardados.

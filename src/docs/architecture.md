@@ -42,9 +42,18 @@ Hay dos carpetas `ui`: la de shadcn (`src/components/ui`) y la propia (`src/shar
 `normalizePagination` (en `core/types`) acepta números o strings y `pages` nulo. Se usa en todos los endpoints
 (`/products` devuelve page/limit como string). Siempre se envían `page` y `limit` explícitos (máx. 100).
 
+## Diseño móvil
+Por debajo de **1024 px** (breakpoint `lg` de Tailwind) la app usa el diseño móvil: menú lateral como cajón, popups como hoja inferior y gesto desde el borde izquierdo. Las clases usan `lg:`; el código JS usa `UI_CONFIG.LAYOUT.MOBILE_QUERY`
+(`(max-width: 1023px)`). Si se cambia el punto de corte hay que cambiar ambos. Los formularios de dos columnas pasan a una columna por debajo de 768 px (`md`).
+
+## Router
+`createBrowserRouter` + `RouterProvider` (`App.tsx`): un router de datos, necesario para `useBlocker` (guardia de formularios con cambios sin guardar).
+Las páginas se cargan con `lazy` y `Suspense`.
+
 ## Convenciones
 - Comentarios en inglés; cada archivo empieza con su ruta como comentario.
 - Endpoints y env vars solo en `core/config/api.config.ts`.
+- Formularios: ver `forms.md` (placeholder, espacio reservado, "X", confirmación, guardia de navegación).
 - Errores de formulario inline, nunca como toast. Toasts solo para confirmaciones y fallos de red.
 - Textos siempre por i18n (es/en/pt/zh); los locales se cargan bajo demanda.
 - Animaciones con framer-motion liviano: componentes `m.*` dentro de `LazyMotion`; se respetan
