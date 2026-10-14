@@ -17,10 +17,15 @@
 ## 🔔 RECORDATORIOS PARA EL USUARIO (la IA debe recordárselos al cerrar la 2b y antes de empezar la Fase 3)
 - [ ] **Decirle al otro Claude (el de la API)** que despliegue lo acordado (409 con `code`/`field` y validación de `business`/`ui`) y que **avise** cuando esté desplegado. Todavía NO lo hizo.
 - [ ] Cuando avise: **probar desde el panel** (1) crear un tenant con un slug repetido en `test-panel` y ver que el 409 marque el campo exacto, y (2) editar `test-panel` para confirmar que la validación nueva no rompió nada.
-- [ ] Corregir a mano `ui.branding.seasonal` de eu-amo-coxinha (`$rename` de `seasonal` a `active`, con backup) y la palabra «wilderness» en `appDescription.zh` de sabor-urbano.
+
+## 💡 Sugerencias (ideas; sin fecha ni decisión)
+- **Cerrar sesiones abiertas de un usuario:** hoy el bloqueo por intentos fallidos solo impide iniciar sesión y las sesiones ya abiertas siguen hasta que vencen (7 días);
+  desactivar sí las corta en la siguiente petición. Cerrar al bloquear NO se recomienda (cualquiera que conozca un email podría sacar a esa persona fallando su contraseña a propósito).
+  Opción segura: botón «Cerrar sesiones» solo para el SuperAdmin, que requiere en la API una marca `sessionsValidAfter` en el usuario comprobada en `authenticate`.
+- Cambiar el slug de un tenant, eliminar tenants y registro propio de TenantAdmin: ver más abajo (no planificados).
 
 ## Abiertos
-- [ ] **Decisión del dueño — cerrar sesiones:** el bloqueo no las cierra (ver `users-and-roles.md`). Opciones: dejarlo así / botón «Cerrar sesiones» para el SuperAdmin (requiere `sessionsValidAfter` en la API) / cerrar al bloquear (no recomendado).
+- [ ] **Fase 3 — antes de empezar:** pedir la respuesta real de `GET /products` y `GET /categories` (forma de `createdBy`/`updatedBy`, `title`, `category`, `config`, paginación) para tipar sin suponer, y confirmar las opciones de estilo de tablas para Preferencias (ver Recordatorios con disparador).
 - [ ] Revisión de las traducciones por hablantes nativos de portugués y chino (ver `i18n.md`) y correr `scripts/check-i18n.mjs` antes de cada commit con textos nuevos.
 - [ ] Política de contraseñas: evaluar mínimo de 10–12 caracteres en el panel y bloqueo de contraseñas comunes (la API exige hoy 8).
 - [ ] **Centro de ayuda (Fase 6, pulido):** una sección «Ayuda» con buscador. Propuesta: UNA sola sección con artículos cortos en formato pregunta/respuesta (las FAQ son
@@ -31,7 +36,6 @@
       y Usuario, viaja en el JWT de los TenantAdmin y se usa como carpeta de Cloudinary. Requeriría una operación deliberada en la API (script/endpoint que actualice todo y cierre sesiones). No planificado.
 - [ ] **Eliminar un tenant: NO está en el plan.** La API no tiene ruta de borrado de tenants; la alternativa actual es suspender (`isActive: false`), que lo deja fuera del catálogo.
       Borrar de verdad requeriría un endpoint con cascada (productos, categorías, usuarios) o que se niegue si tiene datos. Decisión pendiente del dueño.
-- [ ] Usuarios: cambiar la contraseña de un usuario existente (la API lo permite con `PATCH /users/:id { password }`).
 - [ ] Accesibilidad: probar con lectores de pantalla reales y medir contrastes con axe/Lighthouse (ver `accessibility.md`).
 - [ ] Subir imágenes desde el panel (`POST /uploads/image`) para los ID de SEO/PWA (hoy se escriben a mano).
 - [x] (HECHO en la entrega de accesibilidad: trampa de foco, devolución de foco, flechas en pestañas, saltar al contenido) Navegación por teclado y trampa de foco: Tab/Shift+Tab confinados dentro de `Popup`, `ConfirmDialog` y `MobileDrawer`
@@ -52,6 +56,8 @@
 ## Cerrados
 - [x] Arreglos en el PATCH: la API reemplaza el arreglo completo (confirmado por código y probado en `test-panel`).
 - [x] `customDomain` no se puede quitar por PATCH (índice único + sin `$unset`): el panel no lo ofrece. En la práctica es obligatorio para que el catálogo muestre al tenant.
+- [x] Correcciones de datos a mano (`seasonal` de eu-amo-coxinha y «wilderness» de sabor-urbano): hechas por el dueño.
+- [x] «Nueva contraseña» para usuarios que olvidaron la suya (panel, sección Acceso).
 - [x] API: 409 con `code`/`field` y validación de `business`/`ui` (chequeo contra los 4 tenants: 4 de 4 correctos). Falta que el otro Claude avise del despliegue.
 - [x] Indicador de conexión real (eventos + requests + sonda a la API).
 - [x] Parpadeo del login al abrir con sesión iniciada.

@@ -75,5 +75,5 @@ Sección «Acceso» debajo del formulario (`features/users`). Lista paginada de 
 - **Agregar usuario** (popup): email + contraseña temporal que hay que **repetir** (mínimo 8 y máximo 72 caracteres; «Generar» rellena ambas; botones **Generar** —sin caracteres confundibles— y **Copiar**, y mostrar/ocultar). Rol fijo **TenantAdmin** (un SuperAdmin no lleva tenant).
   Enviar solo valida; antes de crear hay confirmación. 409 = email repetido, marcado en el campo; 400 se reparte por campo.
 - **Desactivar / Activar** (`PATCH /users/:id { isActive }`): desactivar pide confirmación; la persona no se borra y puede reactivarse. No hay baja definitiva de usuarios.
+- **Nueva contraseña** (popup): para quien olvidó la suya. Define una contraseña temporal (repetida, con generar/copiar), con confirmación; reemplaza la anterior y además desbloquea la cuenta (`PATCH /users/:id { password, unlock: true }`).
 - **Desbloquear** (`PATCH /users/:id { unlock: true }`): aparece solo si la cuenta está bloqueada (5 intentos fallidos = 10 minutos).
-- No incluido (la API lo permite): cambiar la contraseña de un usuario existente. Anotado en pendientes.

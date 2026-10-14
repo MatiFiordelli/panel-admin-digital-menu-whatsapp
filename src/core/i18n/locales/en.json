@@ -319,7 +319,8 @@
     "addUser": "Create a person who can sign in and manage this tenant.",
     "unlock": "Removes the lockout from failed attempts so they can sign in again.",
     "deactivate": "Stops this person from signing in. Nothing is deleted and it can be reactivated.",
-    "activate": "Lets this person sign in again."
+    "activate": "Lets this person sign in again.",
+    "resetPassword": "Sets a new temporary password. Use it when the person forgot theirs."
   },
   "a11y": {
     "skipToContent": "Skip to content",
@@ -360,7 +361,8 @@
       "email": "Email",
       "password": "Temporary password",
       "role": "Role",
-      "confirmPassword": "Repeat password"
+      "confirmPassword": "Repeat password",
+      "newPassword": "New temporary password"
     },
     "placeholders": {
       "email": "e.g. person@mybusiness.com",
@@ -382,6 +384,17 @@
     "confirmDeactivate": {
       "title": "Deactivate the user?",
       "body": "“{{email}}” will not be able to sign in until you activate them again."
+    },
+    "reset": "New password",
+    "resetFor": "Reset the password of {{email}}",
+    "resetTitle": "Reset password",
+    "resetHint": "Replaces the previous password and clears any lockout. Sessions that are already open stay valid until they expire.",
+    "resetSubmit": "Reset",
+    "passwordReset": "Password of “{{email}}” updated.",
+    "resetConfirm": {
+      "title": "Reset the password?",
+      "body": "The current password of “{{email}}” will stop working. Share the new one securely.",
+      "confirm": "Reset"
     }
   }
 }

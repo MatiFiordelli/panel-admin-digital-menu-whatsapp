@@ -6,6 +6,7 @@ import { ApiError } from "@/core/lib/axios";
 import { notify } from "@/core/notifications/notify";
 import type { User } from "@/core/types";
 import { UserCreatePopup } from "@/features/users/components/UserCreatePopup";
+import { UserPasswordPopup } from "@/features/users/components/UserPasswordPopup";
 import { useTenantUsers, useUpdateUser } from "@/features/users/hooks/useUsers";
 import type { UpdateUserPayload } from "@/features/users/services/users.service";
 import { DataPagination } from "@/shared/components/DataPagination";
@@ -22,6 +23,8 @@ export function TenantAccess({ slug }: { slug: string }) {
   const [limit, setLimit] = useState(10);
   const [adding, setAdding] = useState(false);
   const [toDeactivate, setToDeactivate] = useState<User | null>(null);
+  const [resetUser, setResetUser] = useState<User | null>(null); // kept after closing so the popup can finish its exit animation
+  const [resetOpen, setResetOpen] = useState(false);
   const { data, isLoading, isError, refetch } = useTenantUsers(slug, page, limit);
   const update = useUpdateUser();
 
@@ -102,6 +105,10 @@ export function TenantAccess({ slug }: { slug: string }) {
                                 onClick={() => run(u, { unlock: true }, "access.unlocked")}>{t("access.unlock")}</button>
                             </Tooltip>
                           )}
+                          <Tooltip label={t("tooltips.resetPassword")}>
+                            <button type="button" className={small} disabled={update.isPending} aria-haspopup="dialog" aria-label={t("access.resetFor", { email: u.email })}
+                              onClick={() => { setResetUser(u); setResetOpen(true); }}>{t("access.reset")}</button>
+                          </Tooltip>
                           {u.isActive ? (
                             <Tooltip label={t("tooltips.deactivate")}>
                               <button type="button" className={small} disabled={update.isPending} aria-label={t("access.deactivateFor", { email: u.email })}
@@ -130,6 +137,7 @@ export function TenantAccess({ slug }: { slug: string }) {
       )}
 
       <UserCreatePopup open={adding} onClose={() => setAdding(false)} slug={slug} />
+      {resetUser && <UserPasswordPopup open={resetOpen} onClose={() => setResetOpen(false)} user={resetUser} />}
 
       <ConfirmDialog
         open={toDeactivate !== null}

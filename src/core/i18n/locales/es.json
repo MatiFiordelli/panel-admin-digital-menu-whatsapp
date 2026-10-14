@@ -319,7 +319,8 @@
     "addUser": "Crear una persona que podrá iniciar sesión y administrar este tenant.",
     "unlock": "Quita el bloqueo por intentos fallidos para que pueda volver a entrar.",
     "deactivate": "Impide que esta persona inicie sesión. No se borra y se puede reactivar.",
-    "activate": "Permite que esta persona vuelva a iniciar sesión."
+    "activate": "Permite que esta persona vuelva a iniciar sesión.",
+    "resetPassword": "Define una contraseña temporal nueva. Usalo si la persona olvidó la suya."
   },
   "a11y": {
     "skipToContent": "Saltar al contenido",
@@ -360,7 +361,8 @@
       "email": "Email",
       "password": "Contraseña temporal",
       "role": "Rol",
-      "confirmPassword": "Repetir contraseña"
+      "confirmPassword": "Repetir contraseña",
+      "newPassword": "Nueva contraseña temporal"
     },
     "placeholders": {
       "email": "ej.: persona@minegocio.com",
@@ -382,6 +384,17 @@
     "confirmDeactivate": {
       "title": "¿Desactivar el usuario?",
       "body": "«{{email}}» no podrá iniciar sesión hasta que lo actives de nuevo."
+    },
+    "reset": "Nueva contraseña",
+    "resetFor": "Restablecer la contraseña de {{email}}",
+    "resetTitle": "Restablecer contraseña",
+    "resetHint": "Reemplaza la contraseña anterior y quita cualquier bloqueo. Las sesiones ya abiertas siguen hasta que venzan.",
+    "resetSubmit": "Restablecer",
+    "passwordReset": "Contraseña de «{{email}}» actualizada.",
+    "resetConfirm": {
+      "title": "¿Restablecer la contraseña?",
+      "body": "La contraseña actual de «{{email}}» dejará de funcionar. Compartí la nueva de forma segura.",
+      "confirm": "Restablecer"
     }
   }
 }

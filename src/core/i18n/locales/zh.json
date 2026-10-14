@@ -319,7 +319,8 @@
     "addUser": "创建可以登录并管理此租户的人员。",
     "unlock": "解除因多次失败尝试造成的锁定，使其可再次登录。",
     "deactivate": "禁止此人登录。不会被删除，可重新启用。",
-    "activate": "允许此人再次登录。"
+    "activate": "允许此人再次登录。",
+    "resetPassword": "设置新的临时密码。当此人忘记密码时使用。"
   },
   "a11y": {
     "skipToContent": "跳到主要内容",
@@ -360,7 +361,8 @@
       "email": "邮箱",
       "password": "临时密码",
       "role": "角色",
-      "confirmPassword": "确认密码"
+      "confirmPassword": "确认密码",
+      "newPassword": "新的临时密码"
     },
     "placeholders": {
       "email": "例如：person@mybusiness.com",
@@ -382,6 +384,17 @@
     "confirmDeactivate": {
       "title": "停用用户？",
       "body": "在您再次启用之前，“{{email}}”将无法登录。"
+    },
+    "reset": "新密码",
+    "resetFor": "重置 {{email}} 的密码",
+    "resetTitle": "重置密码",
+    "resetHint": "将替换旧密码并解除任何锁定。已打开的会话在过期前仍然有效。",
+    "resetSubmit": "重置",
+    "passwordReset": "“{{email}}”的密码已更新。",
+    "resetConfirm": {
+      "title": "重置密码？",
+      "body": "“{{email}}”的当前密码将失效。请安全地分享新密码。",
+      "confirm": "重置"
     }
   }
 }
