@@ -1,8 +1,9 @@
 // src/features/tenants/components/TenantsTable.tsx
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUiStore } from "@/core/store/ui-store";
+import { Tooltip } from "@/shared/components/ui/Tooltip";
 import { GLOBAL_QUERY_ROOTS } from "@/core/config/api.config";
 import type { Tenant } from "@/core/types";
 
@@ -16,7 +17,7 @@ export function TenantsTable({ tenants, isLoading, limit }: Props) {
   const setActiveTenant = useUiStore((s) => s.setActiveTenant);
 
   const fmt = new Intl.DateTimeFormat(i18n.language, { dateStyle: "medium" });
-  const th = "px-3 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-ink/60";
+  const th = "px-3 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-ink/70";
 
   // Entering a tenant: drop tenant-scoped cache so nothing from the previous context leaks.
   const enter = (slug: string) => {
@@ -28,13 +29,14 @@ export function TenantsTable({ tenants, isLoading, limit }: Props) {
   return (
     <div className="overflow-x-auto rounded-lg border border-ink/15 bg-surface">
       <table className="w-full min-w-[640px] text-sm">
+        <caption className="sr-only">{t("tenants.title")}</caption>
         <thead className="border-b border-ink/15 bg-ink/[0.03]">
           <tr>
-            <th className={th}>{t("tenants.name")}</th>
-            <th className={th}>{t("tenants.slugDomain")}</th>
-            <th className={th}>{t("tenants.status")}</th>
-            <th className={th}>{t("tenants.createdAt")}</th>
-            <th className={`${th} text-right`}>{t("tenants.actions")}</th>
+            <th scope="col" className={th}>{t("tenants.name")}</th>
+            <th scope="col" className={th}>{t("tenants.slugDomain")}</th>
+            <th scope="col" className={th}>{t("tenants.status")}</th>
+            <th scope="col" className={th}>{t("tenants.createdAt")}</th>
+            <th scope="col" className={`${th} text-right`}>{t("tenants.actions")}</th>
           </tr>
         </thead>
         <tbody>
@@ -48,7 +50,7 @@ export function TenantsTable({ tenants, isLoading, limit }: Props) {
             ))}
 
           {!isLoading && tenants.length === 0 && (
-            <tr><td colSpan={5} className="px-3 py-12 text-center text-ink/60">{t("tenants.empty")}</td></tr>
+            <tr><td colSpan={5} className="px-3 py-12 text-center text-ink/70">{t("tenants.empty")}</td></tr>
           )}
 
           {tenants.map((tn) => {
@@ -69,12 +71,22 @@ export function TenantsTable({ tenants, isLoading, limit }: Props) {
                 </td>
                 <td className="px-3 py-2.5 text-ink/70">{tn.metadata.createdAt ? fmt.format(new Date(tn.metadata.createdAt)) : "—"}</td>
                 <td className="px-3 py-2.5 text-right">
+                  <Tooltip label={t("tooltips.edit")}>
+                  <Link
+                    to={`/tenants/${tn.id}/edit`} aria-label={t("tenants.edit.actionFor", { name })}
+                    className="mr-2 inline-block rounded-md border border-ink/25 px-3 py-1 text-xs font-medium transition-colors hover:bg-ink/5 active:scale-95 focus-visible:outline-2 focus-visible:outline-brand-text"
+                  >
+                    {t("tenants.edit.action")}
+                  </Link>
+                  </Tooltip>
+                  <Tooltip label={active === slug ? t("tooltips.current") : t("tooltips.enter")}>
                   <button
-                    onClick={() => enter(slug)} disabled={!isActive || active === slug}
+                    onClick={() => enter(slug)} aria-label={active === slug ? t("tenants.currentFor", { name }) : t("tenants.enterFor", { name })} disabled={!isActive || active === slug}
                     className="rounded-md border border-ink/25 px-3 py-1 text-xs font-medium hover:bg-ink/5 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-brand"
                   >
                     {active === slug ? t("tenants.current") : t("tenants.manage")}
                   </button>
+                  </Tooltip>
                 </td>
               </tr>
             );
